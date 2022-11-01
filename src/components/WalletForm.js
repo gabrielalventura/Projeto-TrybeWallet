@@ -15,7 +15,7 @@ class WalletForm extends Component {
             type="number"
             data-testid="value-input"
             name="expense-value"
-            placeholder="Valor Despesa"
+            placeholder="Valor"
           />
         </label>
         <label
@@ -26,7 +26,7 @@ class WalletForm extends Component {
             type="text"
             data-testid="description-input"
             name="expense-description"
-            placeholder="Descrição Despesa"
+            placeholder="Despesa"
           />
         </label>
         <label
@@ -110,6 +110,11 @@ class WalletForm extends Component {
             </option>
           </select>
         </label>
+        <button
+          type="button"
+        >
+          Adicionar Despesa
+        </button>
       </form>
     );
   }

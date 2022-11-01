@@ -16,18 +16,18 @@ export const getError = (error) => ({
   error,
 });
 
-const fetchCurrencies = async (dispatch) => {
-  try {
+export function fetchCurrencies() {
+  return async (dispatch) => {
     dispatch(requestAPI());
-    const url = 'https://economia.awesomeapi.com.br/json/all';
-    const response = await fetch(url);
-    const data = await response.json();
-    const everyCurrencies = Object.keys(data);
-    const currencies = everyCurrencies.filter((currency) => currency !== 'USDT');
-    dispatch(getCurrency(currencies));
-  } catch (error) {
-    dispatch(getError(error));
-  }
-};
-
-export const actionFetch = () => fetchCurrencies;
+    try {
+      const url = 'https://economia.awesomeapi.com.br/json/all';
+      const response = await fetch(url);
+      const data = await response.json();
+      const everyCurrencies = Object.keys(data);
+      const currencies = everyCurrencies.filter((currency) => currency !== 'USDT');
+      dispatch(getCurrency(currencies));
+    } catch (error) {
+      dispatch(getError(error));
+    }
+  };
+}
