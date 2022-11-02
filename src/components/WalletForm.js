@@ -1,10 +1,54 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addExpending, getInformation } from '../redux/actions/walletActions';
 
 class WalletForm extends Component {
+  state = {
+    value: '',
+    description: '',
+    currency: 'USD',
+    method: 'Dinheiro',
+    tag: 'Alimentação',
+  };
+
+  handleEvent = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  cleaning = () => {
+    this.setState({
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+    });
+  };
+
+  clickEventAdd = async () => {
+    const { dispatch, expenses } = this.props;
+    const exchangeRates = await dispatch(getInformation());
+    const condition = expenses.length > 0;
+
+    if (condition) {
+      const index = -1;
+      const expense = expenses.slice(index)[0];
+      const nextId = expense.id + 1;
+      const addExpense = { id: nextId, ...this.state, exchangeRates };
+      dispatch(addExpending(addExpense), this.cleaning());
+    } else {
+      const addExpense = { id: 0, ...this.state, exchangeRates };
+      dispatch(addExpending(addExpense), this.cleaning());
+    }
+  }; // função desenvolvida com auxilio da Lígia Bicalho. (e muitos debugs);
+
   render() {
     const { currencies } = this.props;
+    const { value, description, currency, method, tag } = this.state;
     return (
       <form>
         <label
@@ -14,8 +58,10 @@ class WalletForm extends Component {
           <input
             type="number"
             data-testid="value-input"
-            name="expense-value"
+            name="value"
             placeholder="Valor"
+            value={ value }
+            onChange={ this.handleEvent }
           />
         </label>
         <label
@@ -25,8 +71,10 @@ class WalletForm extends Component {
           <input
             type="text"
             data-testid="description-input"
-            name="expense-description"
+            name="description"
             placeholder="Despesa"
+            value={ description }
+            onChange={ this.handleEvent }
           />
         </label>
         <label
@@ -37,13 +85,15 @@ class WalletForm extends Component {
             data-testid="currency-input"
             name="currency"
             id="currency"
+            value={ currency }
+            onChange={ this.handleEvent }
           >
-            {currencies.map((currency, index) => (
+            {currencies.map((coin, index) => (
               <option
                 key={ index }
-                value={ currency }
+                value={ coin }
               >
-                {currency}
+                {coin}
               </option>
             ))}
           </select>
@@ -54,8 +104,10 @@ class WalletForm extends Component {
           Método de Pagamento:
           <select
             data-testid="method-input"
-            name="payment-method"
+            name="method"
             id="payment"
+            value={ method }
+            onChange={ this.handleEvent }
           >
             <option
               value="Dinheiro"
@@ -82,6 +134,8 @@ class WalletForm extends Component {
             data-testid="tag-input"
             name="tag"
             id="tag"
+            value={ tag }
+            onChange={ this.handleEvent }
           >
             <option
               value="Alimentação"
@@ -112,6 +166,7 @@ class WalletForm extends Component {
         </label>
         <button
           type="button"
+          onClick={ this.clickEventAdd }
         >
           Adicionar Despesa
         </button>
@@ -122,10 +177,15 @@ class WalletForm extends Component {
 
 const mapStateToProps = ({ wallet }) => ({
   currencies: wallet.currencies,
+  expenses: wallet.expenses,
 });
 
 WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  })).isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
