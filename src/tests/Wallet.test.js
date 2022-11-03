@@ -94,11 +94,11 @@ describe('Testa os elementos do componente Wallet Form', () => {
 
     const valueInput = screen.getByTestId(testIdValue);
     const description = screen.getByTestId(testIdDescription);
-    const enterButton = screen.getByRole('button');
+    const addButton = screen.getByRole('button');
 
     userEvent.type(valueInput, '85');
     userEvent.type(description, 'salão');
-    userEvent.click(enterButton);
+    userEvent.click(addButton);
 
     expect(valueInput).not.toBe('');
     expect(description).not.toBe('');
@@ -111,5 +111,23 @@ describe('Testa os elementos do componente Wallet Form', () => {
 
     // expect(coins).toBeInTheDocument();
     expect(coins).toHaveLength(15);
+  });
+
+  it('Testa se os inputs ficam limpos após o click de adicionar despesa', () => {
+    renderWithRouterAndRedux(<Wallet />);
+
+    const valueInput = screen.getByTestId(testIdValue);
+    const description = screen.getByTestId(testIdDescription);
+    const addButton = screen.getByRole('button');
+
+    userEvent.type(valueInput, '85');
+    userEvent.type(description, 'salão');
+    userEvent.click(addButton);
+
+    const afterAddValue = screen.getByTestId(testIdValue);
+    const afterAddDescription = screen.getByTestId(testIdDescription);
+
+    expect(afterAddValue).toHaveTextContent('');
+    expect(afterAddDescription).toHaveTextContent('');
   });
 });
