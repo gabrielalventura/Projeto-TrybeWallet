@@ -88,10 +88,10 @@ class WalletForm extends Component {
             value={ currency }
             onChange={ this.handleEvent }
           >
-            {currencies.map((coin, index) => (
+            {currencies.map((coin) => (
               <option
                 data-testid="api-input"
-                key={ index }
+                key={ coin }
                 value={ coin }
               >
                 {coin}
