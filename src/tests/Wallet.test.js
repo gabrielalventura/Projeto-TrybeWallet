@@ -130,4 +130,25 @@ describe('Testa os elementos do componente Wallet Form', () => {
     expect(afterAddValue).toHaveTextContent('');
     expect(afterAddDescription).toHaveTextContent('');
   });
+
+  it('Testa se as informações são salvas no estado global', async () => {
+    renderWithRouterAndRedux(<Wallet />);
+
+    const valueInput = screen.getByTestId(testIdValue);
+    const addButton = screen.getByRole('button');
+
+    userEvent.type(valueInput, '85');
+    userEvent.click(addButton);
+
+    const addValue = await screen.findByText('85.00');
+
+    expect(addValue).toBeInTheDocument();
+
+    userEvent.type(addValue, '15');
+    userEvent.click(addButton);
+
+    const addValue2 = await screen.findByText('100.00');
+
+    expect(addValue2).toBeInTheDocument();
+  });
 });

@@ -13,10 +13,10 @@ export const makeRequest = (payload) => ({
   payload,
 });
 
-export const getError = (error) => ({
-  type: GET_ERROR,
-  error,
-});
+// export const getError = (error) => ({
+//   type: GET_ERROR,
+//   error,
+// });
 
 export const addExpending = (payload) => ({
   type: ADD_EXPENDING,
@@ -37,7 +37,7 @@ const fetchCoinExchange = async (dispatch) => {
     console.log(data);
     return data;
   } catch (error) {
-    dispatch(getError(error));
+    // dispatch(error);
   }
 };
 

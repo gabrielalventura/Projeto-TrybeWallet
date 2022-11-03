@@ -1,5 +1,5 @@
-import { GET_CURRENCY, GET_ERROR } from '../actions';
-import { ADD_EXPENDING, CHANGE_EDIT } from '../actions/walletActions';
+import { GET_CURRENCY } from '../actions';
+import { ADD_EXPENDING } from '../actions/walletActions';
 
 const initialState = {
   currencies: [], // array de string
@@ -15,23 +15,23 @@ const wallet = (state = initialState, action) => {
       ...state,
       currencies: action.payload,
     };
-  case GET_ERROR:
-    return {
-      ...state,
-      error,
-    };
+  // case GET_ERROR:
+  //   return {
+  //     ...state,
+  //     error,
+  //   };
   case ADD_EXPENDING:
     return ({
       ...state,
       expenses: [...state.expenses,
         action.payload],
     });
-  case CHANGE_EDIT:
-    return {
-      ...state,
-      editor: true,
-      idToEdit: action.payload,
-    };
+  // case CHANGE_EDIT:
+  //   return {
+  //     ...state,
+  //     editor: true,
+  //     idToEdit: action.payload,
+  //   };
   default:
     return state;
   }
