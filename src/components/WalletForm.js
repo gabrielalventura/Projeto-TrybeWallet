@@ -90,6 +90,7 @@ class WalletForm extends Component {
           >
             {currencies.map((coin, index) => (
               <option
+                data-testid="api-input"
                 key={ index }
                 value={ coin }
               >
